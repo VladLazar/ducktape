@@ -306,6 +306,12 @@ class TestContext(object):
         self.ignore = kwargs.get("ignore", False)
         self.ok_to_fail = kwargs.get("ok_to_fail", False)
 
+        # 'force_pass' is meant to be used dinamically within the test
+        # (i.e. the test starts and realises that it shouldn't be running
+        # and throws after setting 'force_pass' on the context). For that
+        # reason we dont' allow setting it from 'kwargs'.
+        self.force_pass = False
+
         # cluster_use_metadata is a dict containing information about how this test will use cluster resources
         self.cluster_use_metadata = copy.copy(kwargs.get("cluster_use_metadata", {}))
 

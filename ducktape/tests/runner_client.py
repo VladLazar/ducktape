@@ -134,7 +134,10 @@ class RunnerClient(object):
 
             data = self.run_test()
 
-            if self.test_context.ok_to_fail:
+            if self.tests_context.force_pass:
+                test_status = PASS
+                self.log(logging.INFO, "Force PASS")
+            elif self.test_context.ok_to_fail:
                 test_status = OPASS
                 self.log(logging.INFO, "OPASS")
             else:
@@ -142,7 +145,9 @@ class RunnerClient(object):
                 self.log(logging.INFO, "PASS")
 
         except BaseException as e:
-            if self.test_context.ok_to_fail:
+            if self.test_context.force_pass:
+                test_status = PASS
+            elif self.test_context.ok_to_fail:
                 test_status = OFAIL
                 err_trace = self._exc_msg(e)
                 summary += err_trace
